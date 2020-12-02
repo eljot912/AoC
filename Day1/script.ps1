@@ -1,4 +1,4 @@
-$inputData = Get-Content .\input.txt
+$inputData = Get-Content .\input
 $dataCount = $inputData.Count
 $result=[System.Collections.ArrayList]@()
 for ($i = 0; $i -lt $dataCount; $i++) {
