@@ -9,22 +9,18 @@ $direction | ForEach-Object {
     $dTrees = 0
     $puzzle | ForEach-Object {
         if ($slope % $dDown -eq 0) {
-            $end=$_.length-1
-            if ($dIndex -gt $end) {
-                $extend = [math]::Truncate($dIndex / $end) + 1
-                $line = $_* $extend
+            $end=$_.length
+            while ($dIndex -ge $end) {
+                $dIndex = $dIndex - ($end * [math]::Truncate($dIndex/$end))
             }
-            else {
-                $line = $_
-            }
-            if($line[$dIndex] -eq '#') {
+            if($_[$dIndex] -eq '#') {
                 $dTrees++
             }
             $dIndex+=$dRight
         }
         $slope++
     }
-    Write-Output "Trees at $_`: $dTrees"
+    Write-Output "Trees at R$dRight,D$dDown`: $dTrees"
     $trees *= $dTrees
 }
-Write-Output "Multiply all: $trees"
+Write-Output "All Slopes (*) $trees"
