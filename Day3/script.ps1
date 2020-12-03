@@ -1,5 +1,6 @@
 $puzzle = Get-Content ./input
 $direction = @('1.1','3.1','5.1','7.1','1.2')
+[long]$trees=1
 $direction | ForEach-Object {
     $dRight=$_.split(".")[0]
     $dDown=$_.split(".")[1]
@@ -24,6 +25,6 @@ $direction | ForEach-Object {
         $slope++
     }
     Write-Output "Trees at $_`: $dTrees"
-    if ([int]$trees -eq 0 ) { $trees=$dTrees } else { $trees *= $dTrees }
+    $trees *= $dTrees
 }
 Write-Output "Multiply all: $trees"
