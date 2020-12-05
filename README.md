@@ -1,2 +1,2 @@
-# AoC2020
-AdventOfCode 2020 in Powershell.
+# AoC2
+AdventOfCode(s) in Powershell.
