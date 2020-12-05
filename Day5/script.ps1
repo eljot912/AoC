@@ -30,9 +30,9 @@ $dataInput | ForEach-Object {
 $mID = $t | Measure-Object SeatID -Maximum -Minimum
 
 for ($i = $mID.Minimum; $i -le $mid.Maximum; $i++) {
-    if ($t.SeatId -notcontains $i) {
+    if ($t.SeatId -notcontains $i -and $i+1 -in $t.SeatID -and $i-1 -in $t.SeatID) {
         $m.Add($i) | Out-Null
     }
 }
 
-Write-Output "Stage #1: MaxId: $($mID.maximum) | Stage #2: MySeat#: $m"
+Write-Output "Stage #1: MaxSeatId: $($mID.maximum)`n`t| Stage #2: MySeatID: $m"
