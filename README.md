@@ -1,2 +1,2 @@
-# AoC2
+# AoC
 AdventOfCode(s) in Powershell.
