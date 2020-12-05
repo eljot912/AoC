@@ -1,13 +1,13 @@
-$puzzle = Get-Content ./input
-$direction = @('1.1','3.1','5.1','7.1','1.2')
+$in = Get-Content $PSScriptRoot/input
+$sl = @('1.1','3.1','5.1','7.1','1.2')
 [long]$trees=1
-$direction | ForEach-Object {
+$sl | ForEach-Object {
     $dRight=$_.split(".")[0]
     $dDown=$_.split(".")[1]
     $dIndex = 0
     $slope = 0
     $dTrees = 0
-    $puzzle | ForEach-Object {
+    $in | ForEach-Object {
         if ($slope % $dDown -eq 0) {
             $end=$_.length
             while ($dIndex -ge $end) {
@@ -20,7 +20,9 @@ $direction | ForEach-Object {
         }
         $slope++
     }
-    Write-Output "Trees at R$dRight,D$dDown`: $dTrees"
+    if($dRight -eq 3 -and $dDown -eq 1) {
+        Write-Output "Stage #1: -> $dTrees"
+    }
     $trees *= $dTrees
 }
-Write-Output "All Slopes (*) $trees"
+Write-Output "Stage #2: -> $trees"

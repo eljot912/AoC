@@ -1,4 +1,4 @@
-$dataInput = Get-Content ./input
+$dataInput = Get-Content $PSScriptRoot/input
 [string]$passportSet=''
 $passFields=[System.Collections.ArrayList]@()
 [int]$vC1=0
@@ -77,4 +77,4 @@ for ($i = 0; $i -le $dataInput.Count; $i++) {
         $passportSet+="$($dataInput[$i]) "
     }
 }
-Write-Output "Valid Count Part 1: $vC1 `nValid Count Part 2: $vc2"
+Write-Output "Valid Count Stage #1: -> $vC1 | Stage #2: -> $vc2"

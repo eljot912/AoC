@@ -1,39 +1,44 @@
-$inputData = Get-Content .\input
-$dataCount = $inputData.Count
-$result=[System.Collections.ArrayList]@()
+$in = Get-Content $PSScriptRoot/input
+$dataCount = $in.Count
+$t=[System.Collections.ArrayList]@()
 for ($i = 0; $i -lt $dataCount; $i++) {
-    $firstValue=$inputData[$i]
+    $fV=$in[$i]
+    if ($t.Set -contains 3 -and $t.Set -contains 2) {break}
     for ($j = 0; $j -lt $dataCount; $j++)
     {
-        $secondValue=$inputData[$j]
-        if ($firstValue -ne $secondValue)
+        $sV=$in[$j]
+        if ($fV -ne $sV)
         {
-            [int]$additionResult=[int]$firstValue + [int]$secondValue
-            if ($additionResult -eq 2020)
+            [int]$aR=[int]$fV + [int]$sV
+            if ($aR -eq 2020)
             {
-                $result.Add([PSCustomObject]@{
-                    DataSet = "[$firstValue,$secondValue]"
-                    Addition = $additionResult
-                    Multiply = [int]$firstValue * [int]$secondValue
+                $t.Add([PSCustomObject]@{
+                    DataSet = "[$fV,$sV]"
+                    Addition = $aR
+                    Multiply = [int]$fV * [int]$sV
+                    Set = 2
                 }) | Out-Null
             }
-            for ($k = 0; $k -lt $dataCount; $k++)
-            {
-                $thirdValue=$inputData[$k]
-                if ($firstValue -ne $thirdValue)
+            if ($t.Set -notcontains 3) {
+                for ($k = 0; $k -lt $dataCount; $k++)
                 {
-                    [int]$additionResult=[int]$firstValue + [int]$secondValue + [int]$thirdValue
-                    if ($additionResult -eq 2020)
+                    $tV=$in[$k]
+                    if ($fV -ne $tV)
                     {
-                        $result.Add([PSCustomObject]@{
-                            DataSet = "[$firstValue,$secondValue,$thirdValue]"
-                            Addition = $additionResult
-                            Multiply = [int]$firstValue * [int]$secondValue * [int]$thirdValue
-                        }) | Out-Null
+                        [int]$aR=[int]$fV + [int]$sV + [int]$tV
+                        if ($aR -eq 2020)
+                        {
+                            $t.Add([PSCustomObject]@{
+                                DataSet = "[$fV,$sV,$tV]"
+                                Addition = $aR
+                                Multiply = [int]$fV * [int]$sV * [int]$tV
+                                Set = 3
+                            }) | Out-Null
+                        }
                     }
                 }
             }
         }
     }
 }
-$result | Sort-Object Multiply
+$t | Sort-Object Multiply
