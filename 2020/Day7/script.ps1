@@ -1,3 +1,6 @@
+#in progress
+
+
 $in = Get-Content $PSScriptRoot/input
 $t=[System.Collections.ArrayList]@()
 $b=[System.Collections.ArrayList]@()
