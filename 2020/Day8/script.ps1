@@ -49,8 +49,7 @@ $v = $t | Where-Object {$_.CMD -in ('nop','jmp')}
 foreach($v1 in $v)
 {
     $t | ForEach-Object {
-        if ($v1.ID -eq $_.ID)
-        {
+        if ($v1.ID -eq $_.ID) {
             switch ($_.CMD) {
                 "nop" { $rep = "jmp" }
                 "jmp" { $rep = "nop" }
@@ -65,6 +64,7 @@ foreach($v1 in $v)
             ARG = $_.ARG
             }) | Out-Null
     }
+    
     #checking different instructions (swapped jmp <-> nop iteration)
     [int]$acc=0
     [int]$nextCMD = 1
