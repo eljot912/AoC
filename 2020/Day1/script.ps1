@@ -45,5 +45,4 @@ $t=[System.Collections.ArrayList]@()
 }
 $st1 = ($t | Where-Object Set -eq 2).Multiply
 $st2 = ($t | Where-Object Set -eq 3).Multiply
-
 Write-Output "Stage #1: -> $st1 | Stage #2: -> $st2"
