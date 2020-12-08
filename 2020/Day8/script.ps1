@@ -1,23 +1,27 @@
 $ErrorActionPreference='Stop'
 $in = Get-Content $PSScriptRoot/input
+$h=@{}
 $t=[System.Collections.ArrayList]@()
 $r=[System.Collections.ArrayList]@()
 $v=[System.Collections.ArrayList]@()
 [int]$ins=1
 
 $in | ForEach-Object {
-    $t.Add([PSCustomObject]@{
-        ID = $ins
+    $obj=[PSCustomObject]@{
         CMD = $_.split(" ")[0]
         ARG = $_.split(" ")[1]
-        }) | Out-Null
-        $ins++
+    }
+    $h.Add($ins, $obj)
+    $ins++
 }
+$h.Add(0,$null)
+$IdList=$h.Values | Where-Object {$_.CMD -in ('nop','jmp')}
 
-$IdList=($t | Where-Object {$_.CMD -in ('nop','jmp')}) + [PSCustomObject]@{ID = 0}
-$v.Add(($IdLIst | Sort-Object ID)) | Out-null
-foreach($v1 in $v.ID)
+
+foreach($v1 in ($h.Keys | Sort-Object ))
 {
+    $v1
+    exit
     [int]$acc=0
     [int]$nextCMD = 1
     [int]$pLines=0
