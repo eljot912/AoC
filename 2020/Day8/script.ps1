@@ -1,27 +1,23 @@
 $ErrorActionPreference='Stop'
 $in = Get-Content $PSScriptRoot/input
-$h=@{}
 $t=[System.Collections.ArrayList]@()
 $r=[System.Collections.ArrayList]@()
 $v=[System.Collections.ArrayList]@()
 [int]$ins=1
 
 $in | ForEach-Object {
-    $obj=[PSCustomObject]@{
+    $t.Add([PSCustomObject]@{
+        ID = $ins
         CMD = $_.split(" ")[0]
         ARG = $_.split(" ")[1]
-    }
-    $h.Add($ins, $obj)
-    $ins++
+        }) | Out-Null
+        $ins++
 }
-$h.Add(0,$null)
-$IdList=$h.Values | Where-Object {$_.CMD -in ('nop','jmp')}
 
-
-foreach($v1 in ($h.Keys | Sort-Object ))
+$IdList=($t | Where-Object {$_.CMD -in ('nop','jmp')}) + [PSCustomObject]@{ID = 0}
+$v.Add(($IdLIst | Sort-Object ID)) | Out-null
+foreach($v1 in $v.ID)
 {
-    $v1
-    exit
     [int]$acc=0
     [int]$nextCMD = 1
     [int]$pLines=0
@@ -61,7 +57,6 @@ foreach($v1 in ($h.Keys | Sort-Object ))
     }
     elseif($pLines -eq $t.Count) {
         Write-Output "Stage #2. Completed. ACC: $acc"
-        break
     }
     $r.Clear()
 }
