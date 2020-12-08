@@ -10,8 +10,7 @@ function Validation([string]$pIn)
     $fTable | ForEach-Object {
         $name=$_.split(":")[0]
         $value=$_.split(":")[1]
-        if ($name -ne 'cid')
-        {
+        if ($name -ne 'cid') {
             $passFields.Add([PSCustomObject]@{
                 Name = $name
                 Value = $value
@@ -59,7 +58,6 @@ function Validation([string]$pIn)
             }
         }
     }
-
     $lc=$passFields | Where-Object {$_.Passed -eq "True"}
     if($lc.Count -eq  $passFields.Count) { $script:vC2++ }
     $passFields.Clear()
