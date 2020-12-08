@@ -15,12 +15,10 @@ $t | ForEach-Object {
     $sc=$_.Char
     $ps = $_.Password.ToCharArray()
     $c = ($ps | Where-Object {$_ -eq $sc} | Measure-Object).Count
-    if($c -ge $_.LowerCount -and $c -le $_.UpperCount)
-    {
+    if($c -ge $_.LowerCount -and $c -le $_.UpperCount) {
         $st1++
     }
-    if (($ps[$_.LowerCount-1] -eq $sc) -xor ($ps[$_.UpperCount-1] -eq $sc))
-    {
+    if (($ps[$_.LowerCount-1] -eq $sc) -xor ($ps[$_.UpperCount-1] -eq $sc)) {
         $st2++
     }    
 }
