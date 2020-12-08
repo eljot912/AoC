@@ -6,12 +6,10 @@ $hBags = @{}
 $bagSearch='shiny gold'
 
 function Get-Data() {
-
     $in | ForEach-Object {
         $outPatt = '^(.*) bags contain ((\d+|no).*bag.*).$'
         $searchOuter=[regex]::Matches($_,$outPatt)
         $outBag=$searchOuter.Groups[1].Value
-        
         $innerBags=$searchOuter.Groups[2].Value.split(",").trim()
         $InnerBags | ForEach-Object {
              $inPatt = '^(\d+|no) (.*) bag|s$'
@@ -29,8 +27,7 @@ function Get-Data() {
 
 function Measure-Bags()
 {
-    foreach ($bag in $hBags.Keys)
-    {
+    foreach ($bag in $hBags.Keys) {
          RecurseBag($bag)
     }
 }
@@ -43,8 +40,7 @@ function RecurseBag($key)
     elseif ($hBags[$key] -match 'shiny gold') {
         $c.Add($bag) | Out-Null
     }
-    else 
-    {
+    else {
         foreach ( $inner in $hBags[$key].split(";")) {
            RecurseBag($inner.split(",")[0])
         }
