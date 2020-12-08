@@ -57,6 +57,7 @@ foreach($v1 in $v.ID)
     }
     elseif($pLines -eq $t.Count) {
         Write-Output "Stage #2. Completed. ACC: $acc"
+        break
     }
     $r.Clear()
 }
