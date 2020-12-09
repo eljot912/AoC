@@ -1,37 +1,37 @@
 $ErrorActionPreference='Stop'
 $in = Get-Content $PSScriptRoot/input
-$t=[System.Collections.ArrayList]@()
+$h=@{}
 $r=[System.Collections.ArrayList]@()
 $v=[System.Collections.ArrayList]@()
 [int]$ins=1
-
 $in | ForEach-Object {
-    $t.Add([PSCustomObject]@{
-        ID = $ins
+    $obj=[PSCustomObject]@{
         CMD = $_.split(" ")[0]
         ARG = $_.split(" ")[1]
-        }) | Out-Null
-        $ins++
+    }
+    $h.Add($ins, $obj)
+    $ins++
+}
+$h.Add(0,$null)
+foreach ($item in $h.GetEnumerator() | Sort-Object | Where-Object {($_.Value).CMD -in ('nop','jmp',$null)}) {
+    $v.Add($item.Name) | Out-null
 }
 
-$IdList=($t | Where-Object {$_.CMD -in ('nop','jmp')}) + [PSCustomObject]@{ID = 0}
-$v.Add(($IdLIst | Sort-Object ID)) | Out-null
-foreach($v1 in $v.ID)
-{
+foreach($v1 in $v | Sort-Object) {
     [int]$acc=0
     [int]$nextCMD = 1
     [int]$pLines=0
-    foreach ($line in $t ) {
-        $command = $t  | Where-Object {$_.ID -eq $nextCMD }
-        if ($command.ID -eq $v1) {
+    foreach ($line in $h.GetEnumerator() | Sort-Object Name | Where-Object {$_.Value.CMD -ne $null}) {
+        $command = $h[$nextCMD]
+        $cLine = $nextCMD
+        if ($nextCMD -eq $v1) {
             switch ($command.CMD) {
                 "nop" { $cmd = "jmp" }
                 "jmp" { $cmd = "nop" }
             }
         }
         else {
-            $cmd=$command.CMD         
-
+            $cmd=$command.CMD
         }
         switch ($cmd) {
             "nop" {
@@ -46,17 +46,18 @@ foreach($v1 in $v.ID)
             }
         }
         $pLines++
-        $r.Add($command.ID) | Out-Null
-        if ($nextCMD -in $r) {
+        $r.Add($cLine) | Out-Null
+        if ($nextCMD -in $r -and $null -ne $command) {
             break
         }
     }
     $r.Clear()
-    if($pLines -ne $t.Count -and $v1 -eq 0) {
+    if($pLines -ne $h.Count -1 -and $v1 -eq 0) {
         Write-Output "Stage #1. Loop. ACC: $acc"
     }
-    elseif($pLines -eq $t.Count) {
+    elseif($pLines -eq ($h.Count -1) ) {
         Write-Output "Stage #2. Completed. ACC: $acc"
+        break
     }
     $r.Clear()
 }
