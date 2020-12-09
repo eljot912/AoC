@@ -54,6 +54,6 @@ for ($k = 1; $k -le $h.Count ; $k++) {
 
 foreach ($set in $hSet.Values) {
     $m=$set.split(",") | Measure-Object -Minimum -Maximum
-    [long]$st2= [long]$m.Maximum + [long]$m.Minimum
+    [long]$st2 = [long]$m.Maximum + [long]$m.Minimum
     Write-Output "Stage #2: -> $st2"
 }
