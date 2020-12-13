@@ -7,7 +7,10 @@ $t=[System.Collections.ArrayList]@()
 [int]$count=0
 $in[1].split(',') | ForEach-Object {
     if($_ -ne 'x') {
-        $h["$count"] = [PSCustomObject]@{HID=$count;ID=$_}
+        $h["$count"] = [PSCustomObject]@{
+            hID=$count
+            ID=$_
+        }
     }
     $count++
 }
