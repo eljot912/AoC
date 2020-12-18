@@ -66,7 +66,7 @@ $yfields=$fields.Value
 $ttemp=[System.Collections.ArrayList]@()
 foreach ($fields in $hTickets.GetEnumerator())
 {
-    $ticketFieldsValues=$fields.Value.split(";") # | ft
+    $ticketFieldsValues=$fields.Value.split(";")
     $ticketFieldsValuesCount = ($ticketFieldsValues | Select-object -Unique).Count
 
     foreach ($allowedRange in $hFieldRanges.GetEnumerator()) {
