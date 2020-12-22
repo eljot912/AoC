@@ -14,11 +14,11 @@ $t=[System.Collections.ArrayList]@()
             if ($eq -eq 0)
             {
                 $t.Add([PSCustomObject]@{
-                DataSet = "[$fv,$sv]"
-                Addition = 2020
-                Multiply = [int]($fv * $sv)
-                Set = 2
-                }) | Out-Null
+                    DataSet = "[$fv,$sv]"
+                    Addition = 2020
+                    Multiply = [int]($fv * $sv)
+                    Set = 2
+                    }) | Out-Null
                 $bst1=$true
                 if ($bst2) { break outer}
             }
@@ -30,11 +30,11 @@ $t=[System.Collections.ArrayList]@()
                     if ($eq -eq 0)
                     {
                         $t.Add([PSCustomObject]@{
-                        DataSet = "[$fv,$sv,$tv]"
-                        Addition = 2020
-                        Multiply =[int]($fv * $sv * $tv)
-                        Set = 3
-                        }) | Out-Null
+                            DataSet = "[$fv,$sv,$tv]"
+                            Addition = 2020
+                            Multiply =[int]($fv * $sv * $tv)
+                            Set = 3
+                            }) | Out-Null
                         $bst2=$true
                         if ($bst1) { break outer}
                     }
