@@ -1,46 +1,51 @@
 $ErrorActionPreference = 'Stop'
+class NumeroUno {
+    [long]$digit = 0
+
+    NumeroUno ( [long]$inputValue ) {
+        $this.digit = $inputValue
+    }
+
+    [long] GetDigit() {
+        return $this.digit
+    }
+
+    static [NumeroUno] op_Addition([NumeroUno]$First, [NumeroUno]$Second) {
+        return [NumeroUno]::new($First.GetDigit() + $Second.GetDigit())
+    }
+    static [NumeroUno] op_Subtraction([NumeroUno]$First, [NumeroUno]$Second) {
+        return [NumeroUno]::new($First.GetDigit() * $Second.GetDigit())
+    }
+}
+class NumeroDuo {
+    [long]$digit = 0
+
+    NumeroDuo ( [long]$inputValue ) {
+        $this.digit = $inputValue
+    }
+
+    [long] GetDigit() {
+        return $this.digit
+    }
+
+    static [NumeroDuo] op_Subtraction([NumeroDuo]$First, [NumeroDuo]$Second) {
+        return [NumeroDuo]::new($First.GetDigit() * $Second.GetDigit())
+    }
+    static [NumeroDuo] op_Division([NumeroDuo]$First, [NumeroDuo]$Second) {
+         return [NumeroDuo]::new($First.GetDigit() + $Second.GetDigit())
+    }
+}
+
 $in = Get-Content $PSScriptRoot/input
+$st1Data=$in.Replace(" ","").replace("*","-") -replace '(\d+)','[numerouno]::new($1)'
+$st2Data=$in.Replace(" ","").replace("*","-").replace("+","/") -replace '(\d+)','[numeroduo]::new($1)'
 [long]$st1=0
-
-function Get-StringMathResult($n1,$n2,[string]$op){
-    switch ($op) {
-        '+' { $result = [long]$n1 + [long]$n2 }
-        '-' { $result = [long]$n1 - [long]$n2 }
-        '*' { $result = [long]$n1 * [long]$n2 }
-        '/' { $result = [long]$n1 / [long]$n2 }
-    }
-    return $result
+[long]$st2=0
+$st1Data | ForEach-Object {
+    $st1 += (Invoke-Expression $_).digit + 0
+}
+$st2Data | ForEach-Object {
+    $st2 += (Invoke-Expression $_).digit + 0
 }
 
-$in | ForEach-Object {
-    $line=$_.replace(" ","")
-    $searchBrackets=[regex]::Matches($line,'\((\d+[+|*]\d+(?:[+|*|-]\d+)*?)\)')
-    if ($searchBrackets.Success) {
-        do {
-            foreach($item in $searchBrackets) {
-                $subItem=$item.Groups[1].Value
-                $mainItem=$item.Value
-                $searchMath=[regex]::Match($subItem,'^(\d+)([-|+|*])(\d+)')
-                if ($searchMath.Success) {
-                    do {
-                        [long]$result=Get-StringMathResult -n1 $searchMath.Groups[1].Value -n2 $searchMath.Groups[3].Value -op $searchMath.Groups[2].Value
-                        $subItem=[regex]::Replace($subItem,'^(\d+)([-|+|*])(\d+)',$result)
-                        $searchMath=[regex]::Match($subItem,'^(\d+)([-|+|*])(\d+)')
-                    } while ($searchMath.Success)
-                    $line=$line.replace($mainItem,$subItem)
-                }
-            }
-            $searchBrackets=[regex]::Matches($line,'\((\d+[+|*]\d+(?:[+|*|-]\d+)*?)\)')
-        } while ($searchBrackets.Success)
-    }
-    $searchMath=[regex]::Match($line,'^(\d+)([-|+|*])(\d+)')
-    if ($searchMath.Success) {
-        do {
-            [long]$result=Get-StringMathResult -n1 $searchMath.Groups[1].Value -n2 $searchMath.Groups[3].Value -op $searchMath.Groups[2].Value
-            $line=[regex]::Replace($line,'^(\d+)([-|+|*])(\d+)',$result)
-            $searchMath=[regex]::Match($line,'^(\d+)([-|+|*])(\d+)')
-        } while ($searchMath.Success)
-    }
-    $st1+=$line
-}
-Write-Output "Stage #1: -> $st1"
+Write-Output "Stage #1: -> $st1 | Stage #2: -> $st2"
