@@ -1,8 +1,8 @@
 $ErrorActionPreference = 'Stop'
-class NumeroUno {
+class StageOne {
     [long]$digit = 0
 
-    NumeroUno ( [long]$inputValue ) {
+    StageOne ( [long]$inputValue ) {
         $this.digit = $inputValue
     }
 
@@ -10,17 +10,17 @@ class NumeroUno {
         return $this.digit
     }
 
-    static [NumeroUno] op_Addition([NumeroUno]$First, [NumeroUno]$Second) {
-        return [NumeroUno]::new($First.GetDigit() + $Second.GetDigit())
+    static [StageOne] op_Addition([StageOne]$First, [StageOne]$Second) {
+        return [StageOne]::new($First.GetDigit() + $Second.GetDigit())
     }
-    static [NumeroUno] op_Subtraction([NumeroUno]$First, [NumeroUno]$Second) {
-        return [NumeroUno]::new($First.GetDigit() * $Second.GetDigit())
+    static [StageOne] op_Subtraction([StageOne]$First, [StageOne]$Second) {
+        return [StageOne]::new($First.GetDigit() * $Second.GetDigit())
     }
 }
-class NumeroDuo {
+class StageTwo {
     [long]$digit = 0
 
-    NumeroDuo ( [long]$inputValue ) {
+    StageTwo ( [long]$inputValue ) {
         $this.digit = $inputValue
     }
 
@@ -28,17 +28,17 @@ class NumeroDuo {
         return $this.digit
     }
 
-    static [NumeroDuo] op_Subtraction([NumeroDuo]$First, [NumeroDuo]$Second) {
-        return [NumeroDuo]::new($First.GetDigit() * $Second.GetDigit())
+    static [StageTwo] op_Subtraction([StageTwo]$First, [StageTwo]$Second) {
+        return [StageTwo]::new($First.GetDigit() * $Second.GetDigit())
     }
-    static [NumeroDuo] op_Division([NumeroDuo]$First, [NumeroDuo]$Second) {
-         return [NumeroDuo]::new($First.GetDigit() + $Second.GetDigit())
+    static [StageTwo] op_Division([StageTwo]$First, [StageTwo]$Second) {
+         return [StageTwo]::new($First.GetDigit() + $Second.GetDigit())
     }
 }
 
 $in = Get-Content $PSScriptRoot/input
-$st1Data=$in.Replace(" ","").replace("*","-") -replace '(\d+)','[numerouno]::new($1)'
-$st2Data=$in.Replace(" ","").replace("*","-").replace("+","/") -replace '(\d+)','[numeroduo]::new($1)'
+$st1Data=$in.Replace(" ","").replace("*","-") -replace '(\d+)','[StageOne]::new($1)'
+$st2Data=$in.Replace(" ","").replace("*","-").replace("+","/") -replace '(\d+)','[StageTwo]::new($1)'
 [long]$st1=0
 [long]$st2=0
 $st1Data | ForEach-Object {
