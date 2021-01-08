@@ -1,6 +1,5 @@
 def get_input() {
-
-    File file = new File('Day20/input')
+	File file = new File('example')
     input=file.text.replace('\r','').split('\n\n')
     outputMap=[:]
     for (tile in input) {
@@ -15,16 +14,13 @@ def get_border(tileArray,edge) {
 	String border = ''
 	switch(edge) {
 		case 'n':
-			border = tileArray[0]
-			break
+			border = tileArray[0]; break
 		case 's':
-			border = tileArray[-1]
-			break
+			border = tileArray[-1]; break
 		case 'e':
-			border = (tileArray.collect { it[-1] }).join()
-			break
+			border = (tileArray.collect { it[-1] }).join(); break
 		case 'w':
-			border = (tileArray.collect { it[0] }).join()
+			border = (tileArray.collect { it[0] }).join(); break
 	}
 	return border
 }
@@ -34,7 +30,6 @@ def match_puzzles(tilesMap) {
     matchSide = [:]
     cornersMap = [:]
     tileCombos = [tilesMap.keySet(),tilesMap.keySet()].combinations().findAll{a,b-> a <b}
-	//println tileCombos.size()
 	for (ids in tileCombos) {
 		(id_1, id_2) = ids
 		tile_1 = tilesMap[id_1]
@@ -51,13 +46,11 @@ def match_puzzles(tilesMap) {
 			}
 		}
 	}
-	//println matchSide
 	matchSide.each { k,v -> 
 		if (v.size() == 2) {
 			cornersMap[k]=v
 		}
 	}
-	assert cornersMap.size() == 4
 	return cornersMap
 }
 
@@ -66,3 +59,32 @@ corners =  match_puzzles(puzzles)
 Long stage_1 = 1
 corners.keySet().collect {stage_1*=it}
 println "Stage_1: -> ${stage_1}"
+
+def rotateObject(tileObject) {
+    rotated  = []
+    for (column in 0..tileObject[0].size()-1) {
+        rotated_row = ''
+        for (row in tileObject[-1..-(tileObject.size())]) {
+            rotated_row += row[column]
+        }
+        rotated+=rotated_row
+    }
+    return rotated
+}
+
+cornerPuzzleID = corners.keySet()[0]
+cornerPuzzleEdges = corners[cornerPuzzleID]
+cornerPuzzle = puzzles[cornerPuzzleID]
+puzzles.remove(cornerPuzzleID)
+
+if (cornerPuzzleEdges in ['ne', 'en']) {
+	cornerPuzzle = rotateObject(cornerPuzzle)
+}
+else if (cornerPuzzleEdges in ['nw', 'wn']) {
+	cornerPuzzle = rotateObject(rotateObject(cornerPuzzle))
+}
+else if (cornerPuzzleEdges in ['sw','ws']) {
+	cornerPuzzle = rotateObject(rotateObject(rotateObject(cornerPuzzle)))
+}
+
+imageSize=Math.sqrt(puzzles.size())
